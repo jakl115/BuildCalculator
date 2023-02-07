@@ -1,0 +1,121 @@
+﻿@using BuildCalculator.Data
+@using BuildCalculator.Data.Enums
+@inject ItemService itemService
+@page "/items/create"
+
+@code {
+    private Item item = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        item.itemClassId = 1;
+        item.nazwa = "<nazwa>";
+    }
+
+    public async void submit() {
+        await itemService.Create(item);
+    }
+}
+
+<h4>Stwórz przedmiot</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="itemClassId" class="control-label">Rodzaj przedmiotu</label>
+                <select class="form-control" @bind="item.itemClassId">
+                    @foreach (int item in Enum.GetValues(typeof(ItemClassEnum)))
+                    {
+                        <option value="@item">@(((ItemClassEnum)item).GetDisplayName())</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="nazwa" class="control-label">Nazwa przedmiotu</label>
+                <input asp-for="nazwa" class="form-control" @bind="item.nazwa"/>
+                <span asp-validation-for="nazwa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="sila" class="control-label">Siła</label>
+                <input asp-for="sila" class="form-control" @bind="item.sila"/>
+                <span asp-validation-for="sila" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="zreka" class="control-label">Zręczność</label>
+                <input asp-for="zreka" class="form-control" @bind="item.zreka"/>
+                <span asp-validation-for="zreka" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="moc" class="control-label">Moc</label>
+                <input asp-for="moc" class="form-control" @bind="item.moc"/>
+                <span asp-validation-for="moc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="wiedza" class="control-label">Wiedza</label>
+                <input asp-for="wiedza" class="form-control" @bind="item.wiedza"/>
+                <span asp-validation-for="wiedza" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="hp" class="control-label">Punkty życia</label>
+                <input asp-for="hp" class="form-control" @bind="item.hp"/>
+                <span asp-validation-for="hp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="mana" class="control-label">Mana</label>
+                <input asp-for="mana" class="form-control" @bind="item.mana"/>
+                <span asp-validation-for="mana" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="konda" class="control-label">Kondycja</label>
+                <input asp-for="konda" class="form-control" @bind="item.konda"/>
+                <span asp-validation-for="konda" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="sieczne" class="control-label">Odporności sieczne</label>
+                <input asp-for="sieczne" class="form-control" @bind="item.sieczne"/>
+                <span asp-validation-for="sieczne" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="obuch" class="control-label">Odporności obuchowe</label>
+                <input asp-for="obuch" class="form-control" @bind="item.obuch"/>
+                <span asp-validation-for="obuch" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="klute" class="control-label">Odporności kłute</label>
+                <input asp-for="klute" class="form-control" @bind="item.klute"/>
+                <span asp-validation-for="klute" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ogien" class="control-label">Odporności na ogień</label>
+                <input asp-for="ogien" class="form-control" @bind="item.ogien"/>
+                <span asp-validation-for="ogien" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="energia" class="control-label">Odporności na energię</label>
+                <input asp-for="energia" class="form-control" @bind="item.energia"/>
+                <span asp-validation-for="energia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="zimno" class="control-label">Odporności na zimno</label>
+                <input asp-for="zimno" class="form-control" @bind="item.zimno"/>
+                <span asp-validation-for="zimno" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="urok" class="control-label">Odporności na uroki</label>
+                <input asp-for="urok" class="form-control" @bind="item.urok"/>
+                <span asp-validation-for="urok" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="dmg" class="control-label">Obrażenia</label>
+                <input asp-for="dmg" class="form-control" @bind="item.dmg"/>
+                <span asp-validation-for="dmg" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input @onclick="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

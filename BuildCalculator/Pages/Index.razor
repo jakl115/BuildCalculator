@@ -1,0 +1,282 @@
+﻿@page "/"
+@using BuildCalculator.Data
+@using BuildCalculator.Data.Enums
+@inject ItemService itemService
+@inject IJSRuntime js
+
+@code {
+    private ICollection<Item> items = new List<Item>();
+    private ICollection<Item> equippedItems = new List<Item>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await itemService.GetAllItems();
+    }
+
+    private void addOrSwapItem(int itemId)
+    {
+        var item = items.First(i => i.itemId == itemId);
+        equippedItems = equippedItems.Where(i => i.itemClassId != item.itemClassId).ToList();
+        equippedItems.Add(item);
+    }
+
+    private void removeItem(int itemClassId)
+    {
+        equippedItems = equippedItems.Where(i => i.itemClassId != itemClassId).ToList();
+
+        js.InvokeVoidAsync("clear", itemClassId.ToString());
+    }
+
+    private void OnChangeForAddOrSwapItem(ChangeEventArgs e)
+    {
+        var SelectedString = e.Value.ToString();
+        addOrSwapItem(Int16.Parse(SelectedString));
+    }
+}
+
+
+<script suppress-error="BL9992">
+    function clear(name) {
+        document.getElementById(name).selectedIndex = 0;
+    }
+</script>
+
+<div class="text-center">
+    <h1 class="display-4">Kalkulator buildów Broken Ranks</h1>
+</div>
+
+<div class="row"> 
+    <div class="col-md-4" >
+        <h4>Przedmioty</h4>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>Hełm</td>
+                    <td> 
+                        <select name="helm" id="@((int)ItemClassEnum.helm)" @onchange="OnChangeForAddOrSwapItem" class="form-control">
+                            <option style="display:none"></option>
+                            @foreach (var item in items.Where(i => i.itemClassId == (int)ItemClassEnum.helm).ToList())
+                            {
+                                <option value="@item.itemId">@item.nazwa</option>
+                            }
+                        </select>
+                    </td>
+                    <td><button @onclick="() => removeItem((int)ItemClassEnum.helm)" class="btn btn-primary">-</button></td>
+                </tr>
+                <tr>
+                    <td>Peleryna</td>
+                    <td>
+                        <select name="peleryna" id="@((int)ItemClassEnum.peleryna)" @onchange="OnChangeForAddOrSwapItem" class="form-control">
+                            <option style="display:none"></option>
+                            @foreach (var item in items.Where(i => i.itemClassId == (int)ItemClassEnum.peleryna).ToList())
+                            {
+                                <option value="@item.itemId">@item.nazwa</option>
+                            }
+                        </select>
+                    </td>
+                    <td><button @onclick="() => removeItem((int)ItemClassEnum.peleryna)" class="btn btn-primary">-</button></td>
+                </tr>
+                <tr>
+                    <td>Zbroja</td>
+                    <td>                        
+                        <select name="zbroja" id="@((int)ItemClassEnum.zbroja)" @onchange="OnChangeForAddOrSwapItem" class="form-control">
+                            <option style="display:none"></option>
+                            @foreach (var item in items.Where(i => i.itemClassId == (int)ItemClassEnum.zbroja).ToList())
+                            {
+                                <option value="@item.itemId">@item.nazwa</option>
+                            }
+                        </select>
+                    </td>
+                    <td><button @onclick="() => removeItem((int)ItemClassEnum.zbroja)" class="btn btn-primary">-</button></td>
+                </tr>
+                <tr>
+                    <td>Pas</td>
+                    <td>                        
+                        <select name="pas" id="@((int)ItemClassEnum.pas)" @onchange="OnChangeForAddOrSwapItem" class="form-control">
+                            <option style="display:none"></option>
+                            @foreach (var item in items.Where(i => i.itemClassId == (int)ItemClassEnum.pas).ToList())
+                            {
+                                <option value="@item.itemId">@item.nazwa</option>
+                            }
+                        </select>
+                    </td>
+                    <td><button @onclick="() => removeItem((int)ItemClassEnum.pas)" class="btn btn-primary">-</button></td>
+                </tr>
+                <tr>
+                    <td>Spodnie</td>
+                    <td>
+                        <select name="spodnie" id="@((int)ItemClassEnum.spodnie)" @onchange="OnChangeForAddOrSwapItem" class="form-control">
+                            <option style="display:none"></option>
+                            @foreach (var item in items.Where(i => i.itemClassId == (int)ItemClassEnum.spodnie).ToList())
+                            {
+                                <option value="@item.itemId">@item.nazwa</option>
+                            }
+                        </select>
+                    </td>
+                    <td><button @onclick="() => removeItem((int)ItemClassEnum.spodnie)" class="btn btn-primary">-</button></td>
+                </tr>
+                <tr>
+                    <td>Buty</td>
+                    <td>
+                        <select name="buty" id="@((int)ItemClassEnum.buty)" @onchange="OnChangeForAddOrSwapItem" class="form-control">
+                            <option style="display:none"></option>
+                            @foreach (var item in items.Where(i => i.itemClassId == (int)ItemClassEnum.buty).ToList())
+                            {
+                                <option value="@item.itemId">@item.nazwa</option>
+                            }
+                        </select>
+                    </td>
+                    <td><button @onclick="() => removeItem((int)ItemClassEnum.buty)" class="btn btn-primary">-</button></td>
+                </tr>
+                <tr>
+                    <td>Rękawice</td>
+                    <td>
+                        <select name="rekawice" id="@((int)ItemClassEnum.rekawice)" @onchange="OnChangeForAddOrSwapItem" class="form-control">
+                            <option style="display:none"></option>
+                            @foreach (var item in items.Where(i => i.itemClassId == (int)ItemClassEnum.rekawice).ToList())
+                            {
+                                <option value="@item.itemId">@item.nazwa</option>
+                            }
+                        </select>
+                    </td>
+                    <td><button @onclick="() => removeItem((int)ItemClassEnum.rekawice)" class="btn btn-primary">-</button></td>
+                </tr>
+                <tr>
+                    <td>Broń</td>
+                    <td>
+                        <select name="bron" id="@((int)ItemClassEnum.bron)" @onchange="OnChangeForAddOrSwapItem" class="form-control">
+                            <option style="display:none"></option>
+                            @foreach (var item in items.Where(i => i.itemClassId == (int)ItemClassEnum.bron).ToList())
+                            {
+                                <option value="@item.itemId">@item.nazwa</option>
+                            }
+                        </select>
+                    </td>
+                    <td><button @onclick="() => removeItem((int)ItemClassEnum.bron)" class="btn btn-primary">-</button></td>
+                </tr>
+                <tr>
+                    <td>Tarcza</td>
+                    <td>                
+                        <select name="tarcza" id="@((int)ItemClassEnum.tarcza)" @onchange="OnChangeForAddOrSwapItem" class="form-control">
+                            <option style="display:none"></option>
+                            @foreach (var item in items.Where(i => i.itemClassId == (int)ItemClassEnum.tarcza).ToList())
+                            {
+                                 <option value="@item.itemId">@item.nazwa</option>
+                            }
+                        </select>
+                    </td>
+                    <td><button @onclick="() => removeItem((int)ItemClassEnum.tarcza)" class="btn btn-primary">-</button></td>
+                </tr>
+                <tr>
+                    <td>Naszyjnik</td>
+                    <td>
+                        <select name="naszyjnik" id="@((int)ItemClassEnum.naszyjnik)" @onchange="OnChangeForAddOrSwapItem" class="form-control">
+                            <option style="display:none"></option>
+                            @foreach (var item in items.Where(i => i.itemClassId == (int)ItemClassEnum.naszyjnik).ToList())
+                            {
+                                 <option value="@item.itemId">@item.nazwa</option>
+                            }
+                        </select>
+                    </td>
+                    <td><button @onclick="() => removeItem((int)ItemClassEnum.naszyjnik)" class="btn btn-primary">-</button></td>
+                </tr>
+                <tr>
+                    <td>Pierścień</td>
+                    <td>                        
+                        <select name="pierscien" id="@((int)ItemClassEnum.pierscien)" @onchange="OnChangeForAddOrSwapItem" class="form-control">
+                            <option style="display:none"></option>
+                            @foreach (var item in items.Where(i => i.itemClassId == (int)ItemClassEnum.pierscien).ToList())
+                            {
+                                <option value="@item.itemId">@item.nazwa</option>
+                            }
+                        </select>
+                    </td>
+                    <td><button @onclick="() => removeItem((int)ItemClassEnum.pierscien)" class="btn btn-primary">-</button></td>
+                </tr>
+@*                <tr>
+                    <td>Pierścień</td>
+                    <td>2</td>
+                </tr>*@
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-4" >
+        <h4>Statystyki</h4>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>Obrażenia</td>
+                    <td>@equippedItems.Sum(i => i.dmg)</td>
+                </tr>
+                <tr>
+                    <td>Siła</td>
+                    <td>@equippedItems.Sum(i => i.sila)</td>
+                </tr>
+                <tr>
+                    <td>Zręczność</td>
+                    <td>@equippedItems.Sum(i => i.zreka)</td>
+                </tr>
+                <tr>
+                    <td>Moc</td>
+                    <td>@equippedItems.Sum(i => i.moc)</td>
+                </tr>
+                <tr>
+                    <td>Wiedza</td>
+                    <td>@equippedItems.Sum(i => i.wiedza)</td>
+                </tr>
+                <tr>
+                    <td>Punkty życia</td>
+                    <td>@equippedItems.Sum(i => i.hp)</td>
+                </tr>
+                <tr>
+                    <td>Mana</td>
+                    <td>@equippedItems.Sum(i => i.mana)</td>
+                </tr>
+                <tr>
+                    <td>Kondycja</td>
+                    <td>@equippedItems.Sum(i => i.konda)</td>
+                </tr>
+            </tbody>
+         </table>
+    </div>
+
+    <div class="col-md-4" >
+        <h4>Odporności</h4>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>Sieczne</td>
+                    <td>@equippedItems.Sum(i => i.sieczne)</td>
+                </tr>
+                <tr>
+                    <td>Obuchowe</td>
+                    <td>@equippedItems.Sum(i => i.obuch)</td>
+                </tr>
+                <tr>
+                    <td>Kłute</td>
+                    <td>@equippedItems.Sum(i => i.klute)</td>
+                </tr>
+                <tr>
+                    <td>Na ogień</td>
+                    <td>@equippedItems.Sum(i => i.ogien)</td>
+                </tr>
+                <tr>
+                    <td>Na energię</td>
+                    <td>@equippedItems.Sum(i => i.energia)</td>
+                </tr>
+                <tr>
+                    <td>Na zimno</td>
+                    <td>@equippedItems.Sum(i => i.zimno)</td>
+                </tr>
+                <tr>
+                    <td>Na uroki</td>
+                    <td>@equippedItems.Sum(i => i.urok)</td>
+                </tr>
+            </tbody>
+         </table>
+    </div>
+</div>
+
+
+

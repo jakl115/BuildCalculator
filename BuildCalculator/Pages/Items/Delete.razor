@@ -1,0 +1,181 @@
+﻿<h3>Delete item</h3>
+
+@using BuildCalculator.Data
+@using BuildCalculator.Data.Enums
+@inject ItemService itemService
+@page "/items/delete/{itemId}"
+
+@code {
+    [Parameter]
+    public string itemId { get; set; }
+    private Item item;
+    private ICollection<Item> items = new List<Item>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await itemService.GetAllItems();
+        item = items.Where(i => i.itemId == Int16.Parse(itemId)).First();
+    }
+
+    public async void submit()
+    {
+        await itemService.Delete(Int16.Parse(itemId));
+    }
+}
+
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>@item.nazwa</h4>
+    <hr />
+    <dl class="row">
+       <dt class = "col-sm-2">
+            Typ przedmiotu
+        </dt>
+        <dd class = "col-sm-10">
+            @(((ItemClassEnum)item.itemClassId).GetDisplayName())
+        </dd>
+        @if (item.sila.HasValue)
+        {
+                <dt class = "col-sm-2">
+                    Siła
+                </dt>
+                <dd class = "col-sm-10">
+                 @item.sila
+                </dd>
+        }
+        @if (item.zreka.HasValue)
+        {
+                <dt class = "col-sm-2">
+                    Zręczność
+                </dt>
+                <dd class = "col-sm-10">
+                @item.zreka
+            </dd>
+        }
+        @if (item.moc.HasValue)
+        {
+                <dt class = "col-sm-2">
+                   Moc
+                </dt>
+                <dd class = "col-sm-10">
+                @item.moc
+                </dd>
+        }
+        @if (item.wiedza.HasValue)
+        {
+                <dt class = "col-sm-2">
+                    Wiedza
+                </dt>
+                <dd class = "col-sm-10">
+                @item.wiedza
+                </dd>
+        }
+        @if (item.hp.HasValue)
+        {
+                <dt class = "col-sm-2">
+                    Punkty życia
+                </dt>
+                <dd class = "col-sm-10">
+                @item.hp
+                </dd>
+        }
+        @if (item.mana.HasValue)
+        {
+                <dt class = "col-sm-2">
+                    Mana
+                </dt>
+                <dd class = "col-sm-10">
+                @item.mana
+                </dd>
+        }
+        @if (item.konda.HasValue)
+        {
+                <dt class = "col-sm-2">
+                    Kondycja
+                </dt>
+                <dd class = "col-sm-10">
+                @item.konda
+                </dd>
+        }
+        @if (item.sieczne.HasValue)
+        {
+                <dt class = "col-sm-2">
+                    Odporności sieczne
+                </dt>
+                <dd class = "col-sm-10">
+                @item.sieczne
+                </dd>
+        }
+        @if (item.obuch.HasValue)
+        {
+                <dt class = "col-sm-2">
+                    Odporności obuchowe
+                </dt>
+                <dd class = "col-sm-10">
+                @item.obuch
+                </dd>
+        }
+        @if (item.klute.HasValue)
+        {
+                <dt class = "col-sm-2">
+                    Odporności kłute
+                </dt>
+                <dd class = "col-sm-10">
+                @item.klute
+                </dd>
+        }
+        @if (item.ogien.HasValue)
+        {
+                <dt class = "col-sm-2">
+                    Odporności na ogień
+                </dt>
+                <dd class = "col-sm-10">
+                @item.ogien
+                </dd>
+        }
+        @if (item.energia.HasValue)
+        {
+                <dt class = "col-sm-2">
+                    Odporności na energię
+                </dt>
+                <dd class = "col-sm-10">
+                @item.energia
+                </dd>
+        }
+        @if (item.zimno.HasValue)
+        {
+                <dt class = "col-sm-2">
+                    Odporności na zimno
+                </dt>
+                <dd class = "col-sm-10">
+                @item.zimno
+                </dd>
+        }
+        @if (item.urok.HasValue)
+        {
+                <dt class = "col-sm-2">
+                    Odporności na uroki
+                </dt>
+                <dd class = "col-sm-10">
+                @item.urok
+                </dd>
+        }
+        @if (item.dmg.HasValue)
+        {
+                <dt class = "col-sm-2">
+                    Obrażenia
+                </dt>
+                <dd class = "col-sm-10">
+                @item.dmg
+                </dd>
+        }
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="itemId" />
+        @*<input type="submit" value="Delete" class="btn btn-danger" /> |*@
+        <input @onclick="submit" value="Delete" class="btn btn-primary" />
+        <a href="/items">Back to List</a>
+    </form>
+</div>

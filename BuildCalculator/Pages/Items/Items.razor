@@ -1,0 +1,145 @@
+﻿<h3>Baza przedmiotów</h3>
+
+@using BuildCalculator.Data
+@using BuildCalculator.Data.Enums
+@inject ItemService itemService
+@page "/items/"
+
+<p>
+    <a href="items/create" class="btn btn-primary">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nazwa przedmiotu
+            </th>
+            <th>
+                Siła
+            </th>
+            <th>
+                Zręczność
+            </th>
+            <th>
+                Moc
+            </th>
+            <th>
+                Wiedza
+            </th>
+            <th>
+                Punkty życia
+            </th>
+            <th>
+                Mana
+            </th>
+            <th>
+                Kondycja
+            </th>
+            <th>
+                Sieczne
+            </th>
+            <th>
+                Obuchowe
+            </th>
+            <th>
+                Kłute
+            </th>
+            <th>
+                Ogień
+            </th>
+            <th>
+                Energia
+            </th>
+            <th>
+                Zimno
+            </th>
+            <th>
+                Urok
+            </th>
+            <th>
+                Obrażenia
+            </th>
+            <th>
+               Rodzaj przedmiotu
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in items)
+        {
+            <tr>
+                <td>
+                    @item.nazwa
+                </td>
+                <td>
+                    @item.sila
+                </td>
+                <td>
+                    @item.zreka
+                </td>
+                <td>
+                    @item.moc
+                </td>
+                <td>
+                    @item.wiedza
+                </td>
+                <td>
+                    @item.hp
+                </td>
+                <td>
+                    @item.mana
+                </td>
+                <td>
+                    @item.konda
+                </td>
+                <td>
+                    @item.sieczne
+                </td>
+                <td>
+                    @item.obuch
+                </td>
+                <td>
+                    @item.klute
+                </td>
+                <td>
+                    @item.ogien
+                </td>
+                <td>
+                    @item.energia
+                </td>
+                <td>
+                    @item.zimno
+                </td>
+                <td>
+                    @item.urok
+                </td>
+                <td>
+                    @item.dmg
+                </td>
+                <td>
+                    @(((ItemClassEnum)item.itemClassId).GetDisplayName())
+                </td>
+                <td>
+@*                    <a href="items/edit/@item.itemId">Edit</a>
+                    <a href="items/details/@item.itemId">Details</a>*@
+                    <a href="items/delete/@item.itemId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+@code {
+	private ICollection<Item> items = new List<Item>();
+
+	protected override async Task OnInitializedAsync()
+    {
+        items = await itemService.GetAllItems();
+    }
+}
+
